@@ -11,5 +11,7 @@
 @interface MovieDetailViewController : UIViewController
 
 @property (nonatomic, strong) NSDictionary *movie;
+@property (weak, nonatomic) IBOutlet UIImageView *nwerroricon;
 
+@property (weak, nonatomic) IBOutlet UILabel *nwerrorLabel;
 @end

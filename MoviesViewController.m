@@ -17,7 +17,8 @@
 @property (weak, nonatomic) IBOutlet UITableView *tableView;
 @property (nonatomic, strong) NSArray *names;
 @property (nonatomic, strong) NSArray *movies;
-
+@property (strong, nonatomic) IBOutlet UIImageView *nwerroricon;
+@property (strong, nonatomic) IBOutlet UILabel *nwerrorLabel;
 @end
 
 
@@ -47,21 +48,37 @@
     NSURL *url = [NSURL URLWithString:@"http://api.rottentomatoes.com/api/public/v1.0/lists/movies/box_office.json?apikey=5dj8dhsygdzc2k5gtc2egxt3&limit=20&country=us"];
     
     NSURLRequest *request = [NSURLRequest requestWithURL:url];
+    UIImage * myImage = [UIImage imageNamed: @"noun_4627_cc.svg"];
+    
+    self.nwerroricon = [[UIImageView alloc] initWithImage: myImage];
+    self.nwerrorLabel.text = @"Network Error";
     
     [NSURLConnection sendAsynchronousRequest:request queue:[NSOperationQueue mainQueue] completionHandler:^(NSURLResponse *response, NSData *data, NSError *connectionError) {
-        NSDictionary *responseDictionary = [NSJSONSerialization JSONObjectWithData:data options:0 error:nil];
         
-        self.movies = responseDictionary[@"movies"];
-        
-        [self.tableView reloadData];
-        [SVProgressHUD dismiss];
-        NSLog(@"%@", responseDictionary);
-    }];
-    
+        NSLog(@"Error: %@", connectionError);
 
-  //  self.names = @[@"A", @"B", @"C", @"D", @"E"];
-    
-    // Do any additional setup after loading the view from its nib.
+        
+        if(connectionError){
+
+            
+            NSLog(@"Network Error");
+            [self.nwerroricon reloadInputViews];
+            [self.nwerrorLabel reloadInputViews];
+        }
+        else{
+            NSDictionary *responseDictionary = [NSJSONSerialization JSONObjectWithData:data options:0 error:nil];
+            
+            self.movies = responseDictionary[@"movies"];
+            [self.tableView reloadData];
+          //  [self.nwerroricon removeFromSuperview];
+           // [self.nwerrorLabel removeFromSuperview];
+            
+        }
+
+        
+        [SVProgressHUD dismiss];
+                //NSLog(@"%@", responseDictionary);
+    }];
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
