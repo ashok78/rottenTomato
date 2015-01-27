@@ -10,6 +10,7 @@
 #import "MovieCell.h"
 #import "UIImageView+AFNetworking.h"
 #import "MovieDetailViewController.h"
+#import "SVProgressHUD.h"
 
 @interface MoviesViewController() <UITableViewDataSource, UITableViewDelegate>
 
@@ -37,6 +38,7 @@
     self.tableView.dataSource = self;
     self.tableView.delegate = self;
     self.tableView.rowHeight = 128;
+    [SVProgressHUD show];
     
     [self.tableView registerNib:[UINib nibWithNibName:@"MovieCell" bundle:nil] forCellReuseIdentifier:@"MovieCell"];
     
@@ -52,6 +54,7 @@
         self.movies = responseDictionary[@"movies"];
         
         [self.tableView reloadData];
+        [SVProgressHUD dismiss];
         NSLog(@"%@", responseDictionary);
     }];
     

@@ -8,6 +8,8 @@
 
 #import "MovieDetailViewController.h"
 #import "UIImageView+AFNetworking.h"
+#import "SVProgressHUD.h"
+
 
 @interface MovieDetailViewController ()
 @property (weak, nonatomic) IBOutlet UILabel *titleLabel;
@@ -36,8 +38,12 @@
     self.synopsisLabel.text = self.movie[@"synopsis"];
     
     NSString * tb = [self.movie valueForKeyPath:@"posters.thumbnail"];
+    [SVProgressHUD show];
     
     [self.poster setImageWithURL:[NSURL URLWithString:[tb stringByReplacingOccurrencesOfString:@"_tmb." withString:@"_ori."]]];
+    
+    [SVProgressHUD dismiss];
+
     
     // Do any additional setup after loading the view from its nib.
 }
